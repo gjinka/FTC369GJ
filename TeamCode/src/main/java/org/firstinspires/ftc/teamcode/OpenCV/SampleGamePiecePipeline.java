@@ -9,13 +9,15 @@ import java.util.List;
 
 /*
 
-Debug notes
--> for detecting multiple samples & toggling which color to detect via gamepad
+    notes
+    -> for detecting multiple samples & toggling which color to detect via gamepad
 
-we would have to detect all samples
-store all valid RotatedRect objects in a List, not just bestRect.
--> for each detected contour that matches aspect ratio -> we would need to store its rectangle and center
-color toggling would mean setting which color bounds to use based on gamepad input
+    we would have to detect all samples
+    store all valid RotatedRect objects in a List, not just bestRect.
+
+
+    -> for each detected contour that matches aspect ratio -> we would need to store its rectangle and center
+    color toggling would mean setting which color bounds to use based on gamepad input
 
  */
 
@@ -179,7 +181,13 @@ public class SampleGamePiecePipeline extends OpenCvPipeline {
 
             //A camera matrix is a 3x4 matrix that describes how a 3D world point is projected onto a 2D image plane.
             Mat cameraMatrix = new Mat(3, 3, CvType.CV_64F);
-            cameraMatrix.put(0,0, fx, 0, cx, 0, fy, cy, 0, 0, 1);//gotta check why there are 11 values
+
+            //the first 0,0 parameters indicates OpenCV to start at the 0,0 position of the 3x3 matrix
+            //the other 9 params are values for the matrix
+            cameraMatrix.put(0,0,
+                    fx, 0, cx,
+                    0, fy, cy,
+                    0, 0, 1);
 
             //distortion matrix holds numbers that tell OpenCV how the specific camera bends light (the coefficients found in gobilda user setup guide)
             MatOfDouble dist = new MatOfDouble(distCoeffs);
